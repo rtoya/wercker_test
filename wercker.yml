@@ -5,7 +5,7 @@ services:
     - wercker/mysql
 build:
     steps:
-        - wantedly/rails-multiple-database-yml@1.0.2
+        - wantedly/rails-multiple-database-yml@1.0.2:
           additional_databases: log
         - bundle-install
         - rails-database-yml
