@@ -5,7 +5,7 @@ namespace :db2 do
     Rails.application.config.paths['db'] = ['db']
     Rails.application.config.paths['db/migrate'] = ['db/migrate']
     Rails.application.config.paths['db/seeds'] = ['db/seeds.rb']
-    Rails.application.config.paths['config/database'] = ['config/test_database.yml']
+    Rails.application.config.paths['config/database'] = ['config/log_database.yml']
   end
 
   task drop: :set_db_config do
