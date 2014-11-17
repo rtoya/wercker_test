@@ -20,26 +20,3 @@ build:
         - script:
             name: Run rspec
             code: bundle exec rspec
-
-deploy:
-    steps:
-        - script:
-            name: make .ssh directory
-            code: mkdir -p "$HOME/.ssh"
-        - create-file:
-            name: write ssh key
-            filename: $HOME/.ssh/id_rsa
-            overwrite: true
-            hide-from-log: true
-            content: $WERCKER_SSH_KEY_PRIVATE
-        - script:
-            name: set permissions for ssh key
-            code: chmod 0400 $HOME/.ssh/id_rsa
-        - script:
-            name: add ssh-agent
-            code: |
-                eval `ssh-agent`
-                ssh-add $HOME/.ssh/id_rsa
-        - cap:
-            stage: $WERCKER_DEPLOYTARGET_NAME
-            tasks: deploy_all
