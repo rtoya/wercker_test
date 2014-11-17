@@ -1,6 +1,6 @@
 box: wercker/ruby
 services:
-  - wercker/postgresql
+    - wercker/postgresql
 build:
     steps:
         - wantedly/rails-multiple-database-yml:
