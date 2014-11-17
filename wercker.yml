@@ -1,0 +1,62 @@
+box: wercker/rvm
+no-response-timeout: 20
+services:
+    - wercker/mysql
+    - wercker/redis
+build:
+    steps:
+        - bundle-install
+        - rails-database-yml
+        - script:
+            name: echo ruby information
+            code: |
+                echo "ruby version $(ruby --version) running"
+                echo "from location $(which ruby)"
+                echo -p "gem list: $(gem list)"
+        - script:
+            name: Set up database
+            code: bundle exec rake db:schema:load RAILS_ENV=test
+        - script:
+            name: Run rspec
+            code: bundle exec rspec
+    after-steps:
+        - sherzberg/slack-notify:
+            subdomain: atrae
+            token: $SLACK_TOKEN
+            channel: "#talentbase-build"
+            username: wercker
+            icon_url: https://avatars3.githubusercontent.com/u/1695193?s=140
+            passed_message: "<$WERCKER_BUILD_URL|Build> of $WERCKER_APPLICATION_NAME/$WERCKER_GIT_BRANCH passed."
+            failed_message: "<$WERCKER_BUILD_URL|Build> of $WERCKER_APPLICATION_NAME/$WERCKER_GIT_BRANCH failed."
+
+deploy:
+    steps:
+        - script:
+            name: make .ssh directory
+            code: mkdir -p "$HOME/.ssh"
+        - create-file:
+            name: write ssh key
+            filename: $HOME/.ssh/id_rsa
+            overwrite: true
+            hide-from-log: true
+            content: $WERCKER_SSH_KEY_PRIVATE
+        - script:
+            name: set permissions for ssh key
+            code: chmod 0400 $HOME/.ssh/id_rsa
+        - script:
+            name: add ssh-agent
+            code: |
+                eval `ssh-agent`
+                ssh-add $HOME/.ssh/id_rsa
+        - cap:
+            stage: $WERCKER_DEPLOYTARGET_NAME
+            tasks: deploy_all
+    after-steps:
+        - sherzberg/slack-notify:
+            subdomain: atrae
+            token: $SLACK_TOKEN
+            channel: "#talentbase"
+            username: wercker
+            icon_url: https://avatars3.githubusercontent.com/u/1695193?s=140
+            passed_message: "<$WERCKER_DEPLOY_URL|Deploy> of $WERCKER_APPLICATION_NAME by $WERCKER_STARTED_BY passed."
+            failed_message: "<$WERCKER_DEPLOY_URL|Deploy> of $WERCKER_APPLICATION_NAME by $WERCKER_STARTED_BY failed."
