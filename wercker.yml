@@ -1,7 +1,7 @@
-box: wercker/ruby
+box: wercker/rvm
 services:
     - wercker/mysql
 build:
     steps:
         - wantedly/rails-multiple-database-yml:
-          additional_databases: log
+            additional_databases: log
