@@ -6,3 +6,4 @@ services:
 build:
     steps:
       - wantedly/rails-multiple-database-yml@1.0.2
+        additional_databases: test
