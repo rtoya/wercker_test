@@ -1,21 +1,9 @@
-box: wercker/rvm
+box: wercker/ruby
 no-response-timeout: 20
 services:
     - wercker/redis
+    - wercker/mysql
 build:
     steps:
-        - bundle-install
         - wantedly/rails-multiple-database-yml:
           additional_databases: test
-        - script:
-            name: echo ruby information
-            code: |
-                echo "ruby version $(ruby --version) running"
-                echo "from location $(which ruby)"
-                echo -p "gem list: $(gem list)"
-        - script:
-            name: Set up database
-            code: bundle exec rake db:schema:load RAILS_ENV=test
-        - script:
-            name: Run rspec
-            code: bundle exec rspec
