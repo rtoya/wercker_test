@@ -1,7 +1,6 @@
 box: wercker/rvm
 no-response-timeout: 20
 services:
-    - wercker/mysql
     - wercker/redis
 build:
     steps:
