@@ -1,0 +1,19 @@
+development:
+  adapter: mysql2
+  encoding: utf8
+  database: rails-wercker-heroku2_development
+  username: root
+  password: 'password'
+  pool: 5
+  host: localhost
+  socket: /tmp/mysql.sock
+
+test:
+  adapter: mysql2
+  encoding: utf8
+  database: rails-wercker-heroku2_test
+  username: root
+  password: 'password'
+  pool: 5
+  host: localhost
+  socket: /tmp/mysql.sock

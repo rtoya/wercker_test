@@ -6,8 +6,8 @@ services:
 build:
     steps:
         - bundle-install
-        - wercker-step.yml:
-          additional_databases:
+        - wantedly/rails-multiple-database-yml:
+          additional_databases: test
         - script:
             name: echo ruby information
             code: |
