@@ -5,5 +5,4 @@ services:
     - wercker/mysql
 build:
     steps:
-        - wantedly/rails-multiple-database-yml:
-          additional_databases: test
+      - wantedly/rails-multiple-database-yml@1.0.2
